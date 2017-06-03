@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
 
-import SyncClient, { synchronizedReducer } from 'paragon-sync-client';
+import { SyncClient, synchronizedReducer } from 'paragon-sync-client';
 
 const client = new SyncClient();
 
