@@ -11,7 +11,11 @@ import promiseMiddleware from 'redux-promise';
 
 import { SyncClient, createSynchronizedReducer } from 'paragon-sync-client';
 
-const client = new SyncClient();
+const client = new SyncClient({
+  room: 'blablabla',
+  synchronizedActions: ['MOVE_BOX'],
+  synchronizedState: ['box_position']
+});
 
 const middleware = compose(
   applyMiddleware(reduxThunk, promiseMiddleware, client.middleware),
@@ -26,7 +30,7 @@ const DEFAULT_STATE = {
 const reducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case 'UPDATE_MESSAGE':
-      return Object.assign({}, state, { message: action.payload.message });
+      return Object.assign({}, state, { message: action.payload });
     case 'MOVE_BOX':
       return Object.assign({}, state, { boxPosition: action.payload });
     default:
@@ -35,7 +39,7 @@ const reducer = (state = DEFAULT_STATE, action) => {
 };
 
 const store = createStore(createSynchronizedReducer(reducer), middleware);
-client.synchronize(store, 'blablabla');
+client.synchronize(store);
 
 client.on('connect', () => {
   if (client.hasMaster) {

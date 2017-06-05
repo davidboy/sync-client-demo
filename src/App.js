@@ -14,8 +14,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // this.props.dispatch({ type: 'MOVE_BOX', payload: { x: this.demoBox.style.left, y: this.demoBox.style.top } });
-
     this.demoBox.onmousedown = (e) => {
       this.setState({ isDragging: true });
 
@@ -35,6 +33,10 @@ class App extends Component {
     }
   }
 
+  onChangeMessageClick() {
+    this.props.dispatch({ type: 'UPDATE_MESSAGE', payload: 'It changed!' });
+  }
+
   render() {
     return (
       <div className="App">
@@ -45,6 +47,9 @@ class App extends Component {
         <p className="App-intro">
           The message is: "{this.props.message}". Shiny!
         </p>
+        <div>
+          <button onClick={this.onChangeMessageClick.bind(this)}>Change the message!</button>
+        </div>
         <div id="demo-box" ref={(box) => this.demoBox = box}
              style={{ left: this.props.boxPosition.x, top: this.props.boxPosition.y }}/>
       </div>
