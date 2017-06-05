@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
 
-import { SyncClient, synchronizedReducer } from 'paragon-sync-client';
+import { SyncClient, createSynchronizedReducer } from 'paragon-sync-client';
 
 const client = new SyncClient();
 
@@ -34,15 +34,12 @@ const reducer = (state = DEFAULT_STATE, action) => {
   }
 };
 
-const store = createStore(synchronizedReducer(reducer), middleware);
+const store = createStore(createSynchronizedReducer(reducer), middleware);
 client.synchronize(store, 'blablabla');
-client.on('remoteAction', e => store.dispatch(e.remoteAction));
 
 client.on('connect', () => {
   if (client.hasMaster) {
     client.loadInitialStateFromMaster();
-  } else {
-    // TODO: load data from server
   }
 });
 
